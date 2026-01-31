@@ -8,28 +8,24 @@ let score = 0;
 let highScore = localStorage.getItem("snakeHighScore") || 0;
 highScoreDisplay.innerText = highScore;
 
-let snake = [{ x: 10 * box, y: 10 * box }];
-let food = {
-    x: Math.floor(Math.random() * 19 + 1) * box,
-    y: Math.floor(Math.random() * 19 + 1) * box
-};
-
+let snake = [{ x: 5 * box, y: 5 * box }];
+let food = { x: Math.floor(Math.random() * 14 + 1) * box, y: Math.floor(Math.random() * 14 + 1) * box };
 let d;
 
-document.addEventListener("keydown", direction);
+// Keyboard Controls
+document.addEventListener("keydown", (e) => {
+    if (e.keyCode == 37) setDirection("LEFT");
+    if (e.keyCode == 38) setDirection("UP");
+    if (e.keyCode == 39) setDirection("RIGHT");
+    if (e.keyCode == 40) setDirection("DOWN");
+});
 
-function direction(event) {
-    if (event.keyCode == 37 && d != "RIGHT") d = "LEFT";
-    else if (event.keyCode == 38 && d != "DOWN") d = "UP";
-    else if (event.keyCode == 39 && d != "LEFT") d = "RIGHT";
-    else if (event.keyCode == 40 && d != "UP") d = "DOWN";
-}
-
-function collision(head, array) {
-    for (let i = 0; i < array.length; i++) {
-        if (head.x == array[i].x && head.y == array[i].y) return true;
-    }
-    return false;
+// Mobile Button Function
+function setDirection(newDir) {
+    if (newDir == "LEFT" && d != "RIGHT") d = "LEFT";
+    if (newDir == "UP" && d != "DOWN") d = "UP";
+    if (newDir == "RIGHT" && d != "LEFT") d = "RIGHT";
+    if (newDir == "DOWN" && d != "UP") d = "DOWN";
 }
 
 function draw() {
@@ -37,10 +33,8 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i == 0 ? "#e94560" : "#0f3460";
-        ctx.strokeStyle = "white";
+        ctx.fillStyle = i == 0 ? "#e94560" : "white";
         ctx.fillRect(snake[i].x, snake[i].y, box, box);
-        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
     }
 
     ctx.fillStyle = "#00ff41";
@@ -57,10 +51,7 @@ function draw() {
     if (snakeX == food.x && snakeY == food.y) {
         score++;
         scoreDisplay.innerText = score;
-        food = {
-            x: Math.floor(Math.random() * 19 + 1) * box,
-            y: Math.floor(Math.random() * 19 + 1) * box
-        };
+        food = { x: Math.floor(Math.random() * 14 + 1) * box, y: Math.floor(Math.random() * 14 + 1) * box };
     } else {
         snake.pop();
     }
@@ -69,16 +60,18 @@ function draw() {
 
     if (snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height || collision(newHead, snake)) {
         clearInterval(game);
-        if (score > highScore) {
-            localStorage.setItem("snakeHighScore", score);
-            alert("NEW HIGH SCORE: " + score);
-        } else {
-            alert("Game Over! Score: " + score);
-        }
+        if (score > highScore) localStorage.setItem("snakeHighScore", score);
+        alert("Game Over!");
         location.reload();
     }
-
     snake.unshift(newHead);
 }
 
-let game = setInterval(draw, 120);
+function collision(head, array) {
+    for (let i = 0; i < array.length; i++) {
+        if (head.x == array[i].x && head.y == array[i].y) return true;
+    }
+    return false;
+}
+
+let game = setInterval(draw, 150);
