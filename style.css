@@ -1,51 +1,53 @@
 body {
     background-color: #1a1a2e;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden; /* Screen hilne se rokne ke liye */
+    touch-action: manipulation;
 }
 
 .game-container {
     text-align: center;
-    background: #16213e;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.score-board {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #e94560;
 }
 
 canvas {
-    border: 4px solid #0f3460;
-    border-radius: 8px;
-    background-color: #000;
+    border: 3px solid #e94560;
+    background: #000;
+    display: block;
+    margin: 0 auto;
+    max-width: 90vw; /* Mobile screen ke mutabiq resize hoga */
 }
 
-.controls {
-    margin-top: 15px;
+.mobile-controls {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-button {
+.middle-row {
+    display: flex;
+    gap: 40px;
+}
+
+.btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
     background: #e94560;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
+    border-radius: 50%;
+    margin: 5px;
+    box-shadow: 0 4px #c62842;
 }
 
-button:hover {
-    background: #c62842;
+.btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0px #c62842;
 }
